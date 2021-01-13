@@ -30,9 +30,9 @@ public class FeedService {
         //인증 조회
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String nickname = authentication.getName();
-        Optional<Member> member = memberRepository.findByNickname(nickname);
+        Member member = memberRepository.findByUsername(nickname).get();
 
-        Writer writer = new Writer(member.get().getId(), nickname);
+        Writer writer = new Writer(member.getId(), nickname);
         Feed feed = Feed.createFeed(writer, feedContent);
         return feedRepository.save(feed);
     }
@@ -47,9 +47,9 @@ public class FeedService {
     }
 
     @Transactional
-    public Optional<Feed> checkFeed(Long feedId) {
+    public Feed checkFeed(Long feedId) {
 
-        Optional<Feed> feed = feedRepository.findById(feedId);
+        Feed feed = feedRepository.findById(feedId).orElseThrow();
         return feed;
     }
 
@@ -60,11 +60,11 @@ public class FeedService {
         //인증 조회
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String nickname = authentication.getName();
-        Optional<Member> member = memberRepository.findByNickname(nickname);
+        Member member = memberRepository.findByUsername(nickname).get();
 
         Feed feed = feedRepository.findById(feedId).orElseThrow();
 
-        if(feed.getWriter().getWriterId()==member.get().getId()){
+        if(feed.getWriter().getWriterId()==member.getId()){
             feed.delete();
             feedRepository.save(feed);
         }
@@ -78,10 +78,11 @@ public class FeedService {
         //인증 조회
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String nickname = authentication.getName();
-        Optional<Member> member = memberRepository.findByNickname(nickname);
+        Optional<Member> member = memberRepository.findByUsername(nickname);
 
         Feed feed = feedRepository.findById(feedId).orElseThrow();
-        feed.getLikesCount();
+
+        feed.clickLikes();
 
     }
 }

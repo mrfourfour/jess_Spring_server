@@ -3,6 +3,7 @@ package com.example.twiterproject.feed.controller;
 import com.example.twiterproject.feed.domain.Feed;
 import com.example.twiterproject.feed.service.FeedService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,13 +24,13 @@ public class FeedController {
     }
 
     @PostMapping
-    public Feed writeFeed(@RequestParam String feedContent){
+    public Feed writeFeed(@RequestBody FeedRequest body){
 
-        return feedService.writeFeed(feedContent);
+        return feedService.writeFeed(body.getContent());
     }
 
     @GetMapping("/{feedId}")
-    public Optional<Feed> checkFeed(@PathVariable Long feedId){
+    public Feed checkFeed(@PathVariable Long feedId){
 
         return feedService.checkFeed(feedId);
     }
@@ -45,5 +46,9 @@ public class FeedController {
         feedService.delete(feedId);
     }
 
+    @Value
+    private static class FeedRequest {
+        String content;
+    }
 
 }

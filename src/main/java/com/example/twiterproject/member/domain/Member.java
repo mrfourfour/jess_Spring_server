@@ -1,15 +1,14 @@
 package com.example.twiterproject.member.domain;
 
-
+//
+//import com.example.twiterproject.friendShip.domain.Friendship;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,20 +18,28 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nickname;
+    private String username;
     @JsonIgnore
     private String password;
+    private String role;
+
+//    @OneToMany
+//    private List<Friendship> friendList;
+//
+//    @OneToMany
+//    private List<Friendship> friendRequestList;
 
 
 
-    private Member(String nickname, String password) {
-        this.nickname=nickname;
+    private Member(String username, String password, String role) {
+        this.username=username;
         this.password=password;
+        this.role=role;
     }
 
 
-    public static Member createMember(String nickname, String password){
-        return new Member(nickname,password);
+    public static Member createMember(String username, String password, String role){
+        return new Member(username,password, role);
     }
 
 }

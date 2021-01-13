@@ -7,6 +7,8 @@ import com.example.twiterproject.feed.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/feed")
 @RequiredArgsConstructor
@@ -17,7 +19,6 @@ public class CommentController {
 
     @PostMapping("/{feedId}/comments")
     public void post(@PathVariable Long feedId, @RequestParam String feedComment){
-        Feed feed=feedRepository.findById(feedId).orElseThrow();
         commentService.commentWrite(feedId,feedComment);
     }
 

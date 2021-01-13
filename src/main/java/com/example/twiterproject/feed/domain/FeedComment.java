@@ -1,5 +1,6 @@
 package com.example.twiterproject.feed.domain;
-
+//
+//import com.example.twiterproject.likes.domain.Likes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,6 +29,9 @@ public class FeedComment {
     private String content; //mediumtext(데이터타입임)
     private Long likesCount;
     private LocalDateTime reportingDate; // datetime
+
+//    @OneToMany(mappedBy = "feed_comment", cascade = CascadeType.PERSIST)
+//    private List<Likes> feedCommentLikes;
 
     private FeedComment(Writer writer, Feed feed, String content){
         this.writer=writer;

@@ -1,9 +1,7 @@
 package com.example.twiterproject.feed.domain;
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+//
+//import com.example.twiterproject.likes.domain.Likes;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,6 +25,10 @@ public class Feed {
 
     @OneToMany(mappedBy = "feed", cascade = CascadeType.PERSIST)
     private List<FeedComment> feedComments;
+
+//    @OneToMany(mappedBy = "feed", cascade = CascadeType.PERSIST)
+//    private List<Likes> feedLikes;
+
     private Boolean deletedFlag;
 
     private Feed(Writer writer, String content) {
@@ -53,4 +55,10 @@ public class Feed {
         comment.setFeed(this);
         feedComments.add(comment);
     }
+
+    public void clickLikes() {
+        likesCount+=1;
+    }
+
+
 }

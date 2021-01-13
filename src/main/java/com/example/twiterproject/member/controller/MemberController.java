@@ -21,19 +21,20 @@ public class MemberController {
 
     @PostMapping("/signup")
     public Member signUp(@RequestBody SignUpRequest body){
-        MemberDto memberDto = new MemberDto(body.nickname, body.password);
+        MemberDto memberDto = new MemberDto(body.username, body.password);
         return memberService.signup(memberDto);
 
     }
 
     @PostMapping("/login")
-    public Optional<Member> login(@RequestBody SignUpRequest body){
-        memberService.loadUserByUsername(body.getNickname());
-        return memberRepository.findByNickname(body.getNickname());
+    public Member login(@RequestBody SignUpRequest body){
+        memberService.loadUserByUsername(body.getUsername());
+        Optional<Member> member=memberRepository.findByUsername(body.getUsername());
+        return member.get();
     }
     @Value
     public static class SignUpRequest {
-        String nickname;
+        String username;
         String password;
     }
 }

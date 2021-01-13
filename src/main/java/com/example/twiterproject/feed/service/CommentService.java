@@ -26,11 +26,11 @@ public class CommentService {
 
         //인증 조회
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String nickname = authentication.getName();
-        Optional<Member> member = memberRepository.findByNickname(nickname);
+        String username = authentication.getName();
+        Member member = memberRepository.findByUsername(username).get();
 
         Feed feed=feedRepository.findById(feedId).orElseThrow();
-        Writer writer = new Writer(member.get().getId(), nickname);
+        Writer writer = new Writer(member.getId(), username);
         FeedComment feedComment = FeedComment.createFeedComment(writer,feed,comment);
 
         feed.enrollComment(feedComment);

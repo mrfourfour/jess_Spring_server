@@ -9,14 +9,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class MemberDto {
-    private String nickname;
-    private String password;
 
+public class MemberDto {
+    private String username;
+    private String password;
+    private String role;
+
+    public MemberDto (String username, String password){
+        this.username=username;
+        this.password=password;
+    }
 
     public Member toEntity(){
 
-        return Member.createMember(nickname, password);
+        return Member.createMember(username, password, role);
     }
 }

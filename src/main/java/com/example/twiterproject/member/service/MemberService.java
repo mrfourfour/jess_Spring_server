@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,21 +29,21 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public Member signup(MemberDto memberDto) {
 
-
-
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberDto.setRole("ROLE_MEMBER");
         return memberRepository.save(memberDto.toEntity());
     }
 
     @Override
-    public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
-        Optional<Member> memberWrapper = memberRepository.findByNickname(nickname);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Member> memberWrapper = memberRepository.findByUsername(username);
         Member member = memberWrapper.get();
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+//
 
-        authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
-
-
-        return new User(member.getNickname(), member.getPassword(), authorities);
+        return new PrincipalDetails(member);
     }
 }
